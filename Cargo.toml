@@ -6,16 +6,15 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dotenv = "0.15.0"
-ethers = "0.13"
-ethers-providers = "0.13.0"
-eyre = "0.6.8"
-juniper = { git = "https://github.com/graphql-rust/juniper.git" , default-features = true, features = ["expose-test-schema", "serde_json"]}
-juniper_rocket = { git = "https://github.com/graphql-rust/juniper.git" }
-rocket = "0.5.0-rc.2"
-rust-crypto = "0.2.36"
-serde_json = "1.0.81"
-tokio = { version = "1.19.2", features = ["full"] }
-mongodb = "2.2.0"
+actix-web = "1.0.0"
+dotenv = "0.9.0"
+futures = "0.1"
+juniper = "0.13.1"
+serde_json = "1.0"
+async-std = "1.10.0"
 serde = { version = "1.0", features = ["derive"] }
-futures = "0.3"
+tokio = { version = "0.2", features = ["full"] }
+[dependencies.mongodb]
+version = "2.1.0"
+default-features = false
+features = ["sync"]
