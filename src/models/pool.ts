@@ -1,0 +1,30 @@
+export default interface Pool {
+  address: string
+  chainId: number
+  protocol: string
+  token0address: string
+  token1address: string
+  token0decimals: number
+  token1decimals: number
+  token0symbol: string
+  token1symbol: string
+  token0name: string
+  token1name: string
+  token0official: boolean
+  token1official: boolean
+  token0community: boolean
+  token1community: boolean
+  token0Logo: string
+  token1Logo: string
+  token0Allocation: number
+  token1Allocation: number
+  reserve0: number
+  reserve1: number
+  feesAPR: number
+  oneDayVolumeUSD: number
+  reserveUSD: number
+  totalSupply: number
+  price: number
+  official: boolean
+  community: boolean
+}
