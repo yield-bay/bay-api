@@ -48,6 +48,8 @@ type Asset {
 type APR {
   farm: Float!
   trading: Float!
+  reward: Float!
+  base: Float!
 }
 
 type Farm {

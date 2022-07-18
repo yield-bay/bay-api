@@ -19,6 +19,8 @@ export default interface Farm {
     apr: {
         farm: number
         trading: number
+        reward: number
+        base: number
     }
     asset: {
         name: string
