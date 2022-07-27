@@ -31,6 +31,7 @@ export const FarmsResolver = async (parents: any, args: any, context: any) => {
     try {
         const dbFarms: Farm[] = (await collections.farms
             ?.find({
+                ap: {$exists:true, $gt: 0}
             })
             .sort({ tvl: -1 })
             // .limit(lim)
