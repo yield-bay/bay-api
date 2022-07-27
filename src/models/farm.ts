@@ -1,37 +1,26 @@
-import Token from "./token"
-
-export default interface Reward {
+interface Reward {
     amount: number
-    token: Token
-    value_usd: number
+    asset: string
+    valueUSD: number
     freq: string
 }
 
-enum Chain {
-    Moonriver,
-    Moonbeam
-}
-
 export default interface Farm {
-    chain: string
     id: number
+    chef: string
+    chain: string
     protocol: string
+    farmType: string
+    farmImpl: string
+    asset: {
+        symbol: string
+        address: string
+    }
+    tvl: number
     apr: {
-        farm: number
-        trading: number
         reward: number
         base: number
     }
-    asset: {
-        name: string
-        address: string
-        tokens: Array<Token>
-    }
-    farm_implementation: string
-    farm_type: string
     rewards: Array<Reward>
-    tvl: number
-    url: string
+    allocPoint: number
 }
-
-

@@ -23,55 +23,35 @@ enum Freq {
   ANNUALLY
 }
 
-type Token {
-  name: String!
-  address: String!
-  symbol: String!
-  decimals: Int!
-  price: Float!
-  logo: String!
-}
-
 type Reward {
   amount: Float!
-  token: Token!
-  value_usd: Float!
+  asset: String!
+  valueUSD: Float!
   freq: String!
 }
 
 type Asset {
-  name: String!
-  address: String
-  tokens: [Token!]!
+  symbol: String!
+  address: String!
 }
 
 type APR {
-  farm: Float!
-  trading: Float!
   reward: Float!
   base: Float!
 }
 
 type Farm {
+  id: Int
+  chef: String
   chain: String!
   protocol: String!
-  farm_type: String!
-  farm_implementation: String!
-
-  # underlying asset
+  farmType: String!
+  farmImpl: String!
   asset: Asset!
-
-  # farm/pool id
-  id: ID!
-
-  # tvl in the farm in usd
   tvl: Float!
-
-  rewards: [Reward!]!
-
   apr: APR!
-
-  url: String!
+  rewards: [Reward!]!
+  allocPoint: Int
 }
 
 type Query {

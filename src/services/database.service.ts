@@ -4,11 +4,7 @@ import * as dotenv from "dotenv"
 
 // Global Variables
 export const collections: {
-  tokens?: mongoDB.Collection
-  pools?: mongoDB.Collection
-  moonwell?: mongoDB.Collection
-  solarbeam?: mongoDB.Collection
-  // accounts?: mongoDB.Collection
+  assets?: mongoDB.Collection
   farms?: mongoDB.Collection
 
 } = {}
@@ -25,19 +21,11 @@ export async function connectToDatabase() {
 
   const db: mongoDB.Db = client.db(process.env.DB_NAME)
 
-  const tokensCollection: mongoDB.Collection = db.collection("tokens")
-  const poolsCollection: mongoDB.Collection = db.collection("pools")
-  const moonwellCollection: mongoDB.Collection = db.collection("moonwell")
-  const solarbeamCollection: mongoDB.Collection = db.collection("solarbeam")
-  // const accountsCollection: mongoDB.Collection = db.collection("accounts");
+  const assetsCollection: mongoDB.Collection = db.collection("assets")
   const farmsCollection: mongoDB.Collection = db.collection("farms")
 
 
-  collections.tokens = tokensCollection
-  collections.pools = poolsCollection
-  collections.moonwell = moonwellCollection
-  collections.solarbeam = solarbeamCollection
-  // collections.accounts = accountsCollection;
+  collections.assets = assetsCollection
   collections.farms = farmsCollection
 
   console.log(`Successfully connected to database: ${db.databaseName}`)

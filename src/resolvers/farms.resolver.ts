@@ -1,37 +1,13 @@
 import { collections } from "../services/database.service"
 import Farm from "../models/farm"
 
-enum Chain {
-    MOONRIVER = "moonriver",
-    MOONBEAM = "moonbeam",
-    ASTAR = "astar"
-}
-
-enum FarmType {
-    STANDARD_AMM,
-    STABLE_AMM,
-    SINGLE_STAKING
-}
-
-enum FarmImplementation {
-    SOLIDITY,
-    INK,
-    PALLET
-}
-
-enum Freq {
-    DAILY,
-    WEEKLY,
-    MONTHLY,
-    ANNUALLY
-}
 
 export const FarmsResolver = async (parents: any, args: any, context: any) => {
 
     try {
         const dbFarms: Farm[] = (await collections.farms
             ?.find({
-                ap: {$exists:true, $gt: 0}
+                allocPoint: { $exists: true, $gt: 0 }
             })
             .sort({ tvl: -1 })
             // .limit(lim)
@@ -41,16 +17,17 @@ export const FarmsResolver = async (parents: any, args: any, context: any) => {
 
         const farms = dbFarms.map((f: Farm) => {
             return {
+                id: f.id,
+                chef: f.chef,
                 chain: f.chain,// == "moonriver" ? Chain.MOONRIVER : Chain.MOONBEAM,
                 protocol: f.protocol,
-                farm_type: f.farm_type,// == "StandardAmm" ? FarmType.STANDARD_AMM : FarmType.STABLE_AMM,
-                farm_implementation: f.farm_implementation,// FarmImplementation.SOLIDITY,
+                farmType: f.farmType,// == "StandardAmm" ? FarmType.STANDARD_AMM : FarmType.STABLE_AMM,
+                farmImpl: f.farmImpl,// FarmImplementation.SOLIDITY,
                 asset: f.asset,
-                id: f.id,
                 tvl: f.tvl,
-                rewards: f.rewards,
                 apr: f.apr,
-                url: f.url,
+                rewards: f.rewards,
+                allocPoint: f.allocPoint,
             }
         })
         return farms
