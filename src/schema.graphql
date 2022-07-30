@@ -33,6 +33,8 @@ type Reward {
 type Asset {
   symbol: String!
   address: String!
+  price: Float!
+  logos: [String!]!
 }
 
 type APR {

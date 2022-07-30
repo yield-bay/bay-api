@@ -15,6 +15,8 @@ export default interface Farm {
     asset: {
         symbol: string
         address: string
+        price: number
+        logos: Array<string>
     }
     tvl: number
     apr: {
