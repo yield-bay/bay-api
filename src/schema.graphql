@@ -1,0 +1,61 @@
+enum Chain {
+  MOONRIVER
+  MOONBEAM
+  ASTAR
+}
+
+enum FarmType {
+  STANDARD_AMM
+  STABLE_AMM
+  SINGLE_STAKING
+}
+
+enum FarmImplementation {
+  SOLIDITY
+  INK
+  PALLET
+}
+
+enum Freq {
+  DAILY
+  WEEKLY
+  MONTHLY
+  ANNUALLY
+}
+
+type Reward {
+  amount: Float!
+  asset: String!
+  valueUSD: Float!
+  freq: String!
+}
+
+type Asset {
+  symbol: String!
+  address: String!
+  price: Float!
+  logos: [String!]!
+}
+
+type APR {
+  reward: Float!
+  base: Float!
+}
+
+type Farm {
+  id: Int
+  chef: String
+  chain: String!
+  protocol: String!
+  farmType: String!
+  farmImpl: String!
+  asset: Asset!
+  tvl: Float!
+  apr: APR!
+  rewards: [Reward!]!
+  allocPoint: Int
+}
+
+type Query {
+  farms: [Farm!]!
+}
