@@ -8,7 +8,7 @@ export const FarmsResolver = async (parents: any, args: any, context: any) => {
         const dbFarms: Farm[] = (await collections.farms
             ?.find({
                 allocPoint: { $exists: true, $gt: 0 },
-                "asset.symbol": { $ne: "xStella" }
+                "asset.symbol": { $nin: ["xStella", "veSOLAR", "veFLARE", "veFLARE-veSOLAR LP"] }
             })
             .sort({ tvl: -1 })
             // .limit(lim)
