@@ -29,6 +29,7 @@ export const FarmsResolver = async (parents: any, args: any, context: any) => {
                 apr: f.apr,
                 rewards: f.rewards,
                 allocPoint: f.allocPoint,
+                lastUpdatedAtUTC: f.lastUpdatedAtUTC,
             }
         })
         return farms

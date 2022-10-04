@@ -25,4 +25,5 @@ export default interface Farm {
     }
     rewards: Array<Reward>
     allocPoint: number
+    lastUpdatedAtUTC: string
 }

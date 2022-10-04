@@ -54,6 +54,7 @@ type Farm {
   apr: APR!
   rewards: [Reward!]!
   allocPoint: Int
+  lastUpdatedAtUTC: String
 }
 
 type Query {
