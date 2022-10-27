@@ -6,6 +6,7 @@ import { resolvers } from "./resolvers/index"
 import { connectToDatabase } from "./services/database.service"
 import { readFileSync } from "fs"
 import NodeCache from "node-cache"
+import { runMangataTask } from "./tasks/mangata"
 
 const gqlSchema = readFileSync("./src/schema.graphql").toString("utf-8")
 
@@ -38,6 +39,9 @@ async function startApolloServer(typeDefs: any, resolvers: any) {
     return listener
   })
 
+  await runMangataTask()
+
+  setInterval(runMangataTask, 1000 * 60 * 3) // every 3min
 
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
 }
