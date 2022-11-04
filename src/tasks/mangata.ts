@@ -1,18 +1,8 @@
 import { Mangata, TMainTokens } from '@mangata-finance/sdk';
 import { BN } from 'bn.js';
-
-import Farm from "../models/farm";
-
-import { collections } from '../services/database.service';
-
 import axios from 'axios';
 
-import util from "util";
-import { exec } from "child_process";
-
-import fs from "fs"
-
-const exec1 = util.promisify(exec);
+import { collections } from '../services/database.service';
 
 // events
 export interface EventsRoot {
