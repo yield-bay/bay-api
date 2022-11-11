@@ -176,31 +176,38 @@ export const runMangataTask = async () => {
     let assetsInfo = await mangata.getAssetsInfo()
     const balance40: any = await mangata.getAmountOfTokenIdInPool('4', '0')
     const balance07: any = await mangata.getAmountOfTokenIdInPool('0', '7')
-    console.log(`\nbal(0, 7): ${balance07}\nbal(4, 0): ${balance40}`);
+    const balance011: any = await mangata.getAmountOfTokenIdInPool('0', '11')
+    console.log(`\nbal(0, 7): ${balance07}\nbal(4, 0): ${balance40}\nbal(0, 11): ${balance011}`);
 
-    let rwd_pools_count = 2
+    let rwd_pools_count = 3
 
     let mgxDecimals: number = assetsInfo[0]['decimals']
     let ksmDecimals: number = assetsInfo[4]['decimals']
     let turDecimals: number = assetsInfo[7]['decimals']
+    let imbuDecimals: number = assetsInfo[11]['decimals']
 
-    console.log("mgxDecimals", mgxDecimals, "turDecimals", turDecimals, "ksmDecimals", ksmDecimals);
+    console.log("mgxDecimals", mgxDecimals, "turDecimals", turDecimals, "ksmDecimals", ksmDecimals, "imbuDecimals", imbuDecimals);
 
     let mgxBal4_0: number = balance40[1] / 10 ** mgxDecimals // ksm_mgx
     let mgxBal0_7: number = balance07[0] / 10 ** mgxDecimals // mgx_tur
+    let mgxBal0_11: number = balance011[0] / 10 ** mgxDecimals // mgx_imbu
 
-    console.log("mgxBal4_0", mgxBal4_0, "mgxBal0_7", mgxBal0_7);
+    console.log("mgxBal4_0", mgxBal4_0, "mgxBal0_7", mgxBal0_7, "mgxBal0_11", mgxBal0_11);
 
     let ksm_mgx_apr = 100 * (300 * 10 ** 6 / rwd_pools_count) / (mgxBal4_0 * 2)
     let mgx_tur_apr = 100 * (300 * 10 ** 6 / rwd_pools_count) / (mgxBal0_7 * 2)
+    let mgx_imbu_apr = 100 * (300 * 10 ** 6 / rwd_pools_count) / (mgxBal0_11 * 2)
 
-    console.log("ksm_mgx_apr", ksm_mgx_apr, "mgx_tur_apr", mgx_tur_apr);
+    console.log("ksm_mgx_apr", ksm_mgx_apr, "mgx_tur_apr", mgx_tur_apr, "mgx_imbu_apr", mgx_imbu_apr);
 
     let b0 = balance40.toString().split(",")[0]
     let b1 = balance40.toString().split(",")[1]
 
     let c0 = balance07.toString().split(",")[0]
     let c1 = balance07.toString().split(",")[1]
+
+    let d0 = balance011.toString().split(",")[0]
+    let d1 = balance011.toString().split(",")[1]
 
     console.log("balance40[0]", balance40[0], "balance40[1]", balance40[1], "b0", new BN(b0), "b1", new BN(b1));
 
@@ -223,30 +230,46 @@ export const runMangataTask = async () => {
         turReserve07,
         new BN((10 ** turDecimals).toString()) // 1tur = 1_000_000_000_0
     );
+    
+    const amountPool011 = await mangata.getAmountOfTokenIdInPool("0", "11");
+    const mgxReserve011 = amountPool011[0];
+    const imbuReserve011 = amountPool011[1];
 
-    console.log("mgxBuyPriceInKsm", mgxBuyPriceInKsm, "turBuyPriceInMgx", turBuyPriceInMgx);
+    const imbuBuyPriceInMgx = await mangata.calculateBuyPrice(
+        mgxReserve011,
+        imbuReserve011,
+        new BN((10 ** imbuDecimals).toString())
+    );
+
+    console.log("mgxBuyPriceInKsm", mgxBuyPriceInKsm, "turBuyPriceInMgx", turBuyPriceInMgx, "imbuBuyPriceInMgx", imbuBuyPriceInMgx);
 
     const mgxInKsm = mgxBuyPriceInKsm.toNumber() / 10 ** ksmDecimals;
 
     const turInMgx = turBuyPriceInMgx.div(new BN((10 ** mgxDecimals).toString())).toNumber();
     const turInKsm = turInMgx * mgxInKsm;
 
-    console.log(mgxInKsm, turInKsm, turInMgx);
+    const imbuInMgx = imbuBuyPriceInMgx.div(new BN((10 ** mgxDecimals).toString())).toNumber();
+    const imbuInKsm = imbuInMgx * mgxInKsm;
+
+    console.log(mgxInKsm, turInKsm, turInMgx, imbuInMgx);
 
     let cgkres = await axios.get("https://api.coingecko.com/api/v3/simple/price?ids=kusama&vs_currencies=usd")
-    const ksmInUsd = cgkres?.data?.kusama?.usd ?? 35.66;
+    const ksmInUsd = cgkres?.data?.kusama?.usd ?? 35.66; // <-- Alice und Bob thinks this is a very awkward default value. Maybe use 0 instead?
     console.log("ksmInUsd", ksmInUsd);
 
     console.log("ksm-mgx tvl: $", ksmInUsd * (parseInt(b0) / 10 ** ksmDecimals + (mgxInKsm * parseInt(b1) / 10 ** mgxDecimals)));
     console.log("mgx-tur tvl: $", ksmInUsd * (mgxInKsm * parseInt(c0) / 10 ** mgxDecimals + (turInKsm * parseInt(c1) / 10 ** turDecimals)));
+    console.log("mgx-imbu tvl: $", ksmInUsd * (mgxInKsm * parseInt(c0) / 10 ** mgxDecimals + (imbuInKsm * parseInt(c1) / 10 ** turDecimals)));
 
-    const rewards_per_day = ksmInUsd * mgxInKsm * (300 * 10 ** 6 / (2 * 365))
-    console.log("rewards_per_day: $", rewards_per_day, "or ", (300 * 10 ** 6 / (2 * 365)), "mgx");
+    
+    const rewards_per_day = ksmInUsd * mgxInKsm * (300 * 10 ** 6 / (rwd_pools_count * 365))
+    console.log("rewards_per_day: $", rewards_per_day, "or ", (300 * 10 ** 6 / (rwd_pools_count * 365)), "mgx");
 
     // base_apr
 
     let baseAPRKsmMgx = 0;
     let baseAPRMgxTur = 0;
+    let baseAPRMgxImbu = 0;
 
     const getDecimals = (assetId: number, assetsInfo: TMainTokens) => {
         console.log("assetsInfo", assetsInfo[assetId.toString()].decimals, "assetId", assetId);
@@ -416,6 +439,9 @@ export const runMangataTask = async () => {
                 } else if (soldAsset == 7) {
                     // tur
                     soldAmountUsd = parseInt(sa, 10) * turInKsm * ksmInUsd
+                } else if (soldAsset == 11) {
+                    // tur
+                    soldAmountUsd = parseInt(sa, 10) * imbuInKsm * ksmInUsd
                 }
                 return {
                     soldAsset: soldAsset,
@@ -435,6 +461,9 @@ export const runMangataTask = async () => {
                 } else if (boughtAsset == 7) {
                     // tur
                     boughtAmountUsd = parseInt(ba, 10) * turInKsm * ksmInUsd
+                } else if (boughtAsset == 11) {
+                    // tur
+                    boughtAmountUsd = parseInt(ba, 10) * imbuInKsm * ksmInUsd
                 }
                 return {
                     soldAsset: soldAsset,
@@ -455,6 +484,7 @@ export const runMangataTask = async () => {
 
         let dailyVolumeLWKsmMgx = 0
         let dailyVolumeLWMgxTur = 0
+        let dailyVolumeLWMgxImbu = 0
 
         swaps.forEach((swap) => {
             if (swap !== undefined && typeof swap !== undefined) {
@@ -466,23 +496,32 @@ export const runMangataTask = async () => {
                     // mgx-tur
                     dailyVolumeLWMgxTur += swap.amountUsd
                 }
+                if ((swap.boughtAsset == 0 && swap.soldAsset == 11) || (swap.boughtAsset == 11 && swap.soldAsset == 0)) {
+                    // mgx-tur
+                    dailyVolumeLWMgxImbu += swap.amountUsd
+                }
             }
         })
 
         console.log("dailyVolumeLWKsmMgx", dailyVolumeLWKsmMgx);
         console.log("dailyVolumeLWMgxTur", dailyVolumeLWMgxTur);
+        console.log("dailyVolumeLWMgxImbu", dailyVolumeLWMgxImbu);
 
         dailyVolumeLWKsmMgx /= 7
         dailyVolumeLWMgxTur /= 7
+        dailyVolumeLWMgxImbu /= 7
 
         console.log("dailyVolumeLWKsmMgx", dailyVolumeLWKsmMgx);
         console.log("dailyVolumeLWMgxTur", dailyVolumeLWMgxTur);
+        console.log("dailyVolumeLWMgxImbu", dailyVolumeLWMgxImbu);
 
         baseAPRKsmMgx = (dailyVolumeLWKsmMgx * 0.002 * 365 * 100) / (ksmInUsd * (parseInt(b0) / 10 ** ksmDecimals + (mgxInKsm * parseInt(b1) / 10 ** mgxDecimals)))
         baseAPRMgxTur = (dailyVolumeLWMgxTur * 0.002 * 365 * 100) / (ksmInUsd * (mgxInKsm * parseInt(c0) / 10 ** mgxDecimals + (turInKsm * parseInt(c1) / 10 ** turDecimals)))
+        baseAPRMgxImbu = (dailyVolumeLWMgxImbu * 0.002 * 365 * 100) / (ksmInUsd * (mgxInKsm * parseInt(c0) / 10 ** mgxDecimals + (imbuInKsm * parseInt(c1) / 10 ** imbuDecimals)))
 
         console.log("baseAPRKsmMgx", baseAPRKsmMgx);
         console.log("baseAPRMgxTur", baseAPRMgxTur);
+        console.log("baseAPRMgxImbu", baseAPRMgxImbu);
     }
 
     collections.farms?.findOneAndUpdate({
@@ -512,7 +551,7 @@ export const runMangataTask = async () => {
             "apr.base": baseAPRKsmMgx,
             "rewards": [
                 {
-                    "amount": (300 * 10 ** 6 / (2 * 365)),
+                    "amount": (300 * 10 ** 6 / (rwd_pools_count * 365)),
                     "asset": "MGX",
                     "valueUSD": rewards_per_day,
                     "freq": "Daily",
@@ -557,7 +596,7 @@ export const runMangataTask = async () => {
             "apr.base": baseAPRMgxTur,
             "rewards": [
                 {
-                    "amount": (300 * 10 ** 6 / (2 * 365)),
+                    "amount": (300 * 10 ** 6 / (rwd_pools_count * 365)),
                     "asset": "MGX",
                     "valueUSD": rewards_per_day,
                     "freq": "Daily",
@@ -572,6 +611,51 @@ export const runMangataTask = async () => {
         console.log("xyk 8");
     }).catch(e => {
         console.log("error xyk 8", e);
+
+    })
+    
+    collections.farms?.findOneAndUpdate({
+        "id": 12,
+        "chef": "xyk",
+        "chain": "Mangata Kusama",
+        "protocol": "Mangata X",
+    }, {
+        "$set": {
+            "id": 12,
+            "chef": "xyk",
+            "chain": "Mangata Kusama",
+            "protocol": "Mangata X",
+            "farmType": "StandardAmm",
+            "farmImpl": "Pallet",
+            "asset": {
+                "symbol": "MGX-IMBU LP",
+                "address": "MGX-IMBU LP",
+                "price": 0.0,
+                "logos": [
+                    "https://raw.githubusercontent.com/yield-bay/assets/main/list/MGX.png",
+                    "https://raw.githubusercontent.com/yield-bay/assets/main/list/IMBU.png",
+                ],
+            },
+            "tvl": ksmInUsd * (mgxInKsm * parseInt(c0) / 10 ** mgxDecimals + (imbuInKsm * parseInt(c1) / 10 ** turDecimals)),
+            "apr.reward": mgx_imbu_apr,
+            "apr.base": baseAPRMgxImbu,
+            "rewards": [
+                {
+                    "amount": (300 * 10 ** 6 / (rwd_pools_count * 365)),
+                    "asset": "MGX",
+                    "valueUSD": rewards_per_day,
+                    "freq": "Daily",
+                }
+            ],
+            "allocPoint": 1,
+            "lastUpdatedAtUTC": new Date().toUTCString(),
+        }
+    }, {
+        upsert: true
+    }).then(r => {
+        console.log("xyk 12");
+    }).catch(e => {
+        console.log("error xyk 12", e);
 
     })
 }
