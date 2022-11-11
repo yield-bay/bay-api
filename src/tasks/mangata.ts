@@ -200,16 +200,14 @@ export const runMangataTask = async () => {
 
     console.log("ksm_mgx_apr", ksm_mgx_apr, "mgx_tur_apr", mgx_tur_apr, "mgx_imbu_apr", mgx_imbu_apr);
 
-    let b0 = balance40.toString().split(",")[0]
-    let b1 = balance40.toString().split(",")[1]
+    let bal0_4_0 = balance40.toString().split(",")[0]
+    let bal1_4_0 = balance40.toString().split(",")[1]
 
-    let c0 = balance07.toString().split(",")[0]
-    let c1 = balance07.toString().split(",")[1]
+    let bal0_0_7 = balance07.toString().split(",")[0]
+    let bal1_0_7 = balance07.toString().split(",")[1]
 
-    let d0 = balance011.toString().split(",")[0]
-    let d1 = balance011.toString().split(",")[1]
-
-    console.log("balance40[0]", balance40[0], "balance40[1]", balance40[1], "b0", new BN(b0), "b1", new BN(b1));
+    let bal0_0_11 = balance011.toString().split(",")[0]
+    let bal1_0_11 = balance011.toString().split(",")[1]
 
     const amountPool40 = await mangata.getAmountOfTokenIdInPool("4", "0");
     const ksmReserve40 = amountPool40[0];
@@ -230,7 +228,7 @@ export const runMangataTask = async () => {
         turReserve07,
         new BN((10 ** turDecimals).toString()) // 1tur = 1_000_000_000_0
     );
-    
+
     const amountPool011 = await mangata.getAmountOfTokenIdInPool("0", "11");
     const mgxReserve011 = amountPool011[0];
     const imbuReserve011 = amountPool011[1];
@@ -254,14 +252,16 @@ export const runMangataTask = async () => {
     console.log(mgxInKsm, turInKsm, turInMgx, imbuInMgx);
 
     let cgkres = await axios.get("https://api.coingecko.com/api/v3/simple/price?ids=kusama&vs_currencies=usd")
-    const ksmInUsd = cgkres?.data?.kusama?.usd ?? 35.66; // <-- Alice und Bob thinks this is a very awkward default value. Maybe use 0 instead?
+    const ksmInUsd = cgkres?.data?.kusama?.usd ?? 0;
     console.log("ksmInUsd", ksmInUsd);
 
-    console.log("ksm-mgx tvl: $", ksmInUsd * (parseInt(b0) / 10 ** ksmDecimals + (mgxInKsm * parseInt(b1) / 10 ** mgxDecimals)));
-    console.log("mgx-tur tvl: $", ksmInUsd * (mgxInKsm * parseInt(c0) / 10 ** mgxDecimals + (turInKsm * parseInt(c1) / 10 ** turDecimals)));
-    console.log("mgx-imbu tvl: $", ksmInUsd * (mgxInKsm * parseInt(c0) / 10 ** mgxDecimals + (imbuInKsm * parseInt(c1) / 10 ** turDecimals)));
+    const ksmMgxTvl = ksmInUsd * (parseInt(bal0_4_0) / 10 ** ksmDecimals + (mgxInKsm * parseInt(bal1_4_0) / 10 ** mgxDecimals));
+    console.log("ksm-mgx tvl: $", ksmMgxTvl);
+    const mgxTurTvl = ksmInUsd * (mgxInKsm * parseInt(bal0_0_7) / 10 ** mgxDecimals + (turInKsm * parseInt(bal1_0_7) / 10 ** turDecimals));
+    console.log("mgx-tur tvl: $", mgxTurTvl);
+    const mgxImbuTvl = ksmInUsd * (mgxInKsm * parseInt(bal0_0_11) / 10 ** mgxDecimals + (imbuInKsm * parseInt(bal1_0_11) / 10 ** imbuDecimals));
+    console.log("mgx-imbu tvl: $", mgxImbuTvl);
 
-    
     const rewards_per_day = ksmInUsd * mgxInKsm * (300 * 10 ** 6 / (rwd_pools_count * 365))
     console.log("rewards_per_day: $", rewards_per_day, "or ", (300 * 10 ** 6 / (rwd_pools_count * 365)), "mgx");
 
@@ -440,7 +440,7 @@ export const runMangataTask = async () => {
                     // tur
                     soldAmountUsd = parseInt(sa, 10) * turInKsm * ksmInUsd
                 } else if (soldAsset == 11) {
-                    // tur
+                    // imbu
                     soldAmountUsd = parseInt(sa, 10) * imbuInKsm * ksmInUsd
                 }
                 return {
@@ -462,7 +462,7 @@ export const runMangataTask = async () => {
                     // tur
                     boughtAmountUsd = parseInt(ba, 10) * turInKsm * ksmInUsd
                 } else if (boughtAsset == 11) {
-                    // tur
+                    // imbu
                     boughtAmountUsd = parseInt(ba, 10) * imbuInKsm * ksmInUsd
                 }
                 return {
@@ -515,9 +515,9 @@ export const runMangataTask = async () => {
         console.log("dailyVolumeLWMgxTur", dailyVolumeLWMgxTur);
         console.log("dailyVolumeLWMgxImbu", dailyVolumeLWMgxImbu);
 
-        baseAPRKsmMgx = (dailyVolumeLWKsmMgx * 0.002 * 365 * 100) / (ksmInUsd * (parseInt(b0) / 10 ** ksmDecimals + (mgxInKsm * parseInt(b1) / 10 ** mgxDecimals)))
-        baseAPRMgxTur = (dailyVolumeLWMgxTur * 0.002 * 365 * 100) / (ksmInUsd * (mgxInKsm * parseInt(c0) / 10 ** mgxDecimals + (turInKsm * parseInt(c1) / 10 ** turDecimals)))
-        baseAPRMgxImbu = (dailyVolumeLWMgxImbu * 0.002 * 365 * 100) / (ksmInUsd * (mgxInKsm * parseInt(c0) / 10 ** mgxDecimals + (imbuInKsm * parseInt(c1) / 10 ** imbuDecimals)))
+        baseAPRKsmMgx = (dailyVolumeLWKsmMgx * 0.002 * 365 * 100) / (ksmMgxTvl)
+        baseAPRMgxTur = (dailyVolumeLWMgxTur * 0.002 * 365 * 100) / (mgxTurTvl)
+        baseAPRMgxImbu = (dailyVolumeLWMgxImbu * 0.002 * 365 * 100) / (mgxImbuTvl)
 
         console.log("baseAPRKsmMgx", baseAPRKsmMgx);
         console.log("baseAPRMgxTur", baseAPRMgxTur);
@@ -546,7 +546,7 @@ export const runMangataTask = async () => {
                     "https://raw.githubusercontent.com/yield-bay/assets/main/list/MGX.png",
                 ],
             },
-            "tvl": ksmInUsd * (parseInt(b0) / 10 ** ksmDecimals + (mgxInKsm * parseInt(b1) / 10 ** mgxDecimals)),
+            "tvl": ksmMgxTvl,
             "apr.reward": ksm_mgx_apr,
             "apr.base": baseAPRKsmMgx,
             "rewards": [
@@ -591,7 +591,7 @@ export const runMangataTask = async () => {
                     "https://raw.githubusercontent.com/yield-bay/assets/main/list/TUR.png",
                 ],
             },
-            "tvl": ksmInUsd * (mgxInKsm * parseInt(c0) / 10 ** mgxDecimals + (turInKsm * parseInt(c1) / 10 ** turDecimals)),
+            "tvl": mgxTurTvl,
             "apr.reward": mgx_tur_apr,
             "apr.base": baseAPRMgxTur,
             "rewards": [
@@ -613,7 +613,7 @@ export const runMangataTask = async () => {
         console.log("error xyk 8", e);
 
     })
-    
+
     collections.farms?.findOneAndUpdate({
         "id": 12,
         "chef": "xyk",
@@ -636,7 +636,7 @@ export const runMangataTask = async () => {
                     "https://raw.githubusercontent.com/yield-bay/assets/main/list/IMBU.png",
                 ],
             },
-            "tvl": ksmInUsd * (mgxInKsm * parseInt(c0) / 10 ** mgxDecimals + (imbuInKsm * parseInt(c1) / 10 ** turDecimals)),
+            "tvl": mgxImbuTvl,
             "apr.reward": mgx_imbu_apr,
             "apr.base": baseAPRMgxImbu,
             "rewards": [
