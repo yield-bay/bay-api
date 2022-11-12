@@ -55,6 +55,11 @@ type Farm {
   rewards: [Reward!]!
   allocPoint: Int
   lastUpdatedAtUTC: String
+  totalScore: Float
+  tvlScore: Float
+  baseAPRScore: Float
+  rewardAPRScore: Float
+  rewardsScore: Float
 }
 
 type Query {

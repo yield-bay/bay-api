@@ -26,4 +26,9 @@ export default interface Farm {
     rewards: Array<Reward>
     allocPoint: number
     lastUpdatedAtUTC: string
+    totalScore: number
+    tvlScore: number
+    baseAPRScore: number
+    rewardAPRScore: number
+    rewardsScore: number
 }
