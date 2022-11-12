@@ -42,6 +42,14 @@ type APR {
   base: Float!
 }
 
+type SafetyScore {
+  total: Float
+  tvl: Float
+  baseAPR: Float
+  rewardAPR: Float
+  rewards: Float
+}
+
 type Farm {
   id: Int
   chef: String
@@ -55,11 +63,7 @@ type Farm {
   rewards: [Reward!]!
   allocPoint: Int
   lastUpdatedAtUTC: String
-  totalScore: Float
-  tvlScore: Float
-  baseAPRScore: Float
-  rewardAPRScore: Float
-  rewardsScore: Float
+  safetyScore: SafetyScore
 }
 
 type Query {
