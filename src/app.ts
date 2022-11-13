@@ -39,9 +39,9 @@ async function startApolloServer(typeDefs: any, resolvers: any) {
     return listener
   })
 
-  await runMangataTask()
+  // await runMangataTask()
 
-  setInterval(runMangataTask, 1000 * 60 * 5) // every 5 min
+  // setInterval(runMangataTask, 1000 * 60 * 5) // every 5 min
 
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
 }
