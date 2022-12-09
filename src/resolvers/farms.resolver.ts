@@ -1,9 +1,7 @@
 import { collections } from "../services/database.service"
 import Farm from "../models/farm"
 
-
 export const FarmsResolver = async (parents: any, args: any, context: any) => {
-
     try {
         const dbFarms: Farm[] = (await collections.farms
             ?.find({
@@ -11,19 +9,17 @@ export const FarmsResolver = async (parents: any, args: any, context: any) => {
                 "asset.symbol": { $nin: ["xStella", "veSOLAR", "veFLARE", "veFLARE-veSOLAR LP"] }
             })
             .sort({ tvl: -1 })
-            // .limit(lim)
             .toArray()) as unknown as Farm[]
-        console.log("dksjdksj", dbFarms.length)
-
+        console.log("farms count", dbFarms.length)
 
         const farms = dbFarms.map((f: Farm) => {
             return {
                 id: f.id,
                 chef: f.chef,
-                chain: f.chain,// == "moonriver" ? Chain.MOONRIVER : Chain.MOONBEAM,
+                chain: f.chain,
                 protocol: f.protocol,
-                farmType: f.farmType,// == "StandardAmm" ? FarmType.STANDARD_AMM : FarmType.STABLE_AMM,
-                farmImpl: f.farmImpl,// FarmImplementation.SOLIDITY,
+                farmType: f.farmType,
+                farmImpl: f.farmImpl,
                 asset: f.asset,
                 tvl: f.tvl,
                 apr: f.apr,

@@ -6,13 +6,9 @@ import { resolvers } from "./resolvers/index"
 import { connectToDatabase } from "./services/database.service"
 import { readFileSync } from "fs"
 import NodeCache from "node-cache"
-import { runMangataTask } from "./tasks/mangata"
 
 const gqlSchema = readFileSync("./src/schema.graphql").toString("utf-8")
 
-async function fun() {
-  console.log("hello worldlskfsdjfkdsjfksj")
-}
 async function startApolloServer(typeDefs: any, resolvers: any) {
   const corsOptions = {
     origin: "*",
@@ -38,10 +34,6 @@ async function startApolloServer(typeDefs: any, resolvers: any) {
     const listener = httpServer.listen({ port: 4000 }, resolve)
     return listener
   })
-
-  // await runMangataTask()
-
-  // setInterval(runMangataTask, 1000 * 60 * 5) // every 5 min
 
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
 }
