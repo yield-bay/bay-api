@@ -6,7 +6,7 @@ import * as dotenv from "dotenv"
 export const collections: {
   assets?: mongoDB.Collection
   farms?: mongoDB.Collection
-
+  xcmpTasks?: mongoDB.Collection
 } = {}
 
 // Initialize Connection
@@ -23,10 +23,12 @@ export async function connectToDatabase() {
 
   const assetsCollection: mongoDB.Collection = db.collection("assets")
   const farmsCollection: mongoDB.Collection = db.collection("farms")
+  const xcmpTasksCollection: mongoDB.Collection = db.collection("xcmpTasks")
 
 
   collections.assets = assetsCollection
   collections.farms = farmsCollection
+  collections.xcmpTasks = xcmpTasksCollection
 
   console.log(`Successfully connected to database: ${db.databaseName}`)
 }

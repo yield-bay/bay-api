@@ -58,6 +58,40 @@ type Farm {
   safetyScore: Float
 }
 
+enum XCMPTaskStatus {
+  RUNNING
+  CANCELLED
+  FINISHED
+}
+
+enum XCMPTaskChain {
+  ROCOCO
+  KUSAMA
+  POLKADOT
+}
+
+type XCMPTask {
+  taskId: String!
+  userAddress: String!
+  chain: XCMPTaskChain!
+  status: XCMPTaskStatus!
+}
+
+type Mutation {
+  addTask(
+    taskId: String!
+    userAddress: String!
+    chain: XCMPTaskChain!
+  ): XCMPTask
+  updateTaskStatus(
+    taskId: String!
+    userAddress: String!
+    chain: XCMPTaskChain!
+    newStatus: String!
+  ): XCMPTaskStatus!
+}
+
 type Query {
   farms(chain: String, protocol: String, chef: String, id: Int): [Farm!]!
+  xcmpTasks(userAddress: String!, chain: XCMPTaskChain): [XCMPTask!]!
 }
