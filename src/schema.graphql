@@ -73,6 +73,7 @@ enum XCMPTaskChain {
 type XCMPTask {
   taskId: String!
   userAddress: String!
+  lpName: String!
   chain: XCMPTaskChain!
   status: XCMPTaskStatus!
 }
@@ -81,11 +82,13 @@ type Mutation {
   addTask(
     taskId: String!
     userAddress: String!
+    lpName: String!
     chain: XCMPTaskChain!
   ): XCMPTask
   updateTaskStatus(
     taskId: String!
     userAddress: String!
+    lpName: String!
     chain: XCMPTaskChain!
     newStatus: String!
   ): XCMPTaskStatus!

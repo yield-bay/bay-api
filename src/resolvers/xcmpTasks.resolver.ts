@@ -17,11 +17,13 @@ export const XCMPTasksResolver = async (parents: any, args: any, context: any) =
 export const AddTaskResolver = async (parents: any, args: any, context: any) => {
     const taskId = args?.taskId;
     const userAddress = args?.userAddress;
+    const lpName = args?.lpName;
     const chain = args?.chain;
     try {
         let obj = {
             taskId: taskId,
             userAddress: userAddress,
+            lpName: lpName,
             chain: chain,
             status: "RUNNING"
         }
@@ -44,12 +46,14 @@ export const AddTaskResolver = async (parents: any, args: any, context: any) => 
 export const UpdateTaskStatusResolver = async (parents: any, args: any, context: any) => {
     const taskId = args?.taskId;
     const userAddress = args?.userAddress;
+    const lpName = args?.lpName;
     const chain = args?.chain;
     const newStatus = args?.newStatus;
     try {
         let obj = {
             taskId: taskId,
             userAddress: userAddress,
+            lpName: lpName,
             chain: chain,
             status: newStatus
         }
@@ -57,6 +61,7 @@ export const UpdateTaskStatusResolver = async (parents: any, args: any, context:
             {
                 taskId: taskId,
                 userAddress: userAddress,
+                lpName: lpName,
                 chain: chain
             },
             { $set: obj },
