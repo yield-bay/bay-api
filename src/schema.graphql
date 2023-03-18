@@ -96,5 +96,5 @@ type Mutation {
 
 type Query {
   farms(chain: String, protocol: String, chef: String, id: Int): [Farm!]!
-  xcmpTasks(userAddress: String!, chain: XCMPTaskChain): [XCMPTask!]!
+  xcmpTasks(userAddress: String!, chain: XCMPTaskChain!): [XCMPTask!]!
 }

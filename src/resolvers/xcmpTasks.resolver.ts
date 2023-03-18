@@ -3,8 +3,11 @@ import Farm from "../models/farm"
 import XCMPTask from "../models/xcmpTask"
 
 export const XCMPTasksResolver = async (parents: any, args: any, context: any) => {
+    const userAddress = args?.userAddress;
+    const chain = args?.chain;
+
     try {
-        let cur = collections.xcmpTasks?.find({})
+        let cur = collections.xcmpTasks?.find({ userAddress: userAddress, chain: chain })
         const allValues = await cur?.toArray();
         return allValues
     } catch (error: any) {
