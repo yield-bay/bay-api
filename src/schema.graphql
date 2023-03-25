@@ -78,7 +78,82 @@ type XCMPTask {
   status: XCMPTaskStatus!
 }
 
+type Token {
+  symbol: String!
+  amount: Float!
+}
+
+enum LiquidityEventType {
+  ADD_LIQUIDITY
+  REMOVE_LIQUIDITY
+}
+
+enum AutocompoundEventType {
+  CREATE
+  UPDATE
+}
+
+type LiquidityEvent {
+  userAddress: String!
+  chain: XCMPTaskChain!
+  token0: Token!
+  token1: Token!
+  lp: Token!
+  timestamp: String!
+  gasFee: Float! # in MGX
+  eventType: LiquidityEventType!
+}
+
+type AutocompoundEvent {
+  userAddress: String!
+  chain: XCMPTaskChain!
+  taskId: String!
+  lp: Token!
+  duration: Int! # in days
+  frequency: Int! # in days
+  timestamp: String!
+  executionFee: Float! # in TUR
+  xcmpFee: Float! # in TUR
+  status: XCMPTaskStatus!
+  eventType: AutocompoundEventType!
+}
+
+input TokenInput {
+  symbol: String!
+  amount: Float!
+}
+
 type Mutation {
+  createLiquidityEvent(
+    userAddress: String!
+    chain: XCMPTaskChain!
+    token0: TokenInput!
+    token1: TokenInput!
+    lp: TokenInput!
+    timestamp: String!
+    gasFee: Float! # in MGX
+    eventType: LiquidityEventType!
+  ): LiquidityEvent
+  createAutocompoundEvent(
+    userAddress: String!
+    chain: XCMPTaskChain!
+    taskId: String!
+    lp: TokenInput!
+    duration: Int! # in days
+    frequency: Int! # in days
+    timestamp: String!
+    executionFee: Float! # in TUR
+    xcmpFee: Float! # in TUR
+    status: XCMPTaskStatus!
+    eventType: AutocompoundEventType!
+  ): AutocompoundEvent
+  updateAutocompoundEventStatus(
+    userAddress: String!
+    chain: XCMPTaskChain!
+    taskId: String!
+    lp: TokenInput!
+    newStatus: String!
+  ): XCMPTaskStatus!
   addTask(
     taskId: String!
     userAddress: String!

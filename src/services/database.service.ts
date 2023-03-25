@@ -7,6 +7,8 @@ export const collections: {
   assets?: mongoDB.Collection
   farms?: mongoDB.Collection
   xcmpTasks?: mongoDB.Collection
+  liquidityEvents?: mongoDB.Collection
+  autocompoundEvents?: mongoDB.Collection
 } = {}
 
 // Initialize Connection
@@ -24,11 +26,15 @@ export async function connectToDatabase() {
   const assetsCollection: mongoDB.Collection = db.collection("assets")
   const farmsCollection: mongoDB.Collection = db.collection("farms")
   const xcmpTasksCollection: mongoDB.Collection = db.collection("xcmpTasks")
+  const liquidityEventsCollection: mongoDB.Collection = db.collection("liquidityEvents")
+  const autocompoundEventsCollection: mongoDB.Collection = db.collection("autocompoundEvents")
 
 
   collections.assets = assetsCollection
   collections.farms = farmsCollection
   collections.xcmpTasks = xcmpTasksCollection
+  collections.liquidityEvents = liquidityEventsCollection
+  collections.autocompoundEvents = autocompoundEventsCollection
 
   console.log(`Successfully connected to database: ${db.databaseName}`)
 }
