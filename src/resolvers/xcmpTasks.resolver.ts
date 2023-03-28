@@ -7,7 +7,7 @@ export const XCMPTasksResolver = async (parents: any, args: any, context: any) =
     const chain = args?.chain;
 
     try {
-        let cur = collections.xcmpTasks?.find({ userAddress: userAddress, chain: chain })
+        let cur = collections.xcmpTasks?.find({ userAddress: userAddress, chain: chain, status: {$eq: "RUNNING" } })
         const allValues = await cur?.toArray();
         return allValues
     } catch (error: any) {
