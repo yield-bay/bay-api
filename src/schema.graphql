@@ -116,6 +116,7 @@ type AutocompoundEvent {
   xcmpFee: Float! # in TUR
   status: XCMPTaskStatus!
   eventType: AutocompoundEventType!
+  percentage: Float!
 }
 
 input TokenInput {
@@ -146,6 +147,7 @@ type Mutation {
     xcmpFee: Float! # in TUR
     status: XCMPTaskStatus!
     eventType: AutocompoundEventType!
+    percentage: Float!
   ): AutocompoundEvent
   updateAutocompoundEventStatus(
     userAddress: String!

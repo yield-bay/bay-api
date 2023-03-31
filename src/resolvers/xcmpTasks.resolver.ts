@@ -70,13 +70,13 @@ export const UpdateTaskStatusResolver = async (parents: any, args: any, context:
     const newStatus = args?.newStatus;
     try {
         let obj = {
-            taskId: taskId,
-            userAddress: userAddress,
-            lpName: lpName,
-            chain: chain,
+            // taskId: taskId,
+            // userAddress: userAddress,
+            // lpName: lpName,
+            // chain: chain,
             status: newStatus
         }
-        let res = await collections.xcmpTasks?.updateOne(
+        let res = await collections.xcmpTasks?.findOneAndUpdate(
             {
                 taskId: taskId,
                 userAddress: userAddress,
@@ -146,12 +146,14 @@ export const CreateAutocompoundEventResolver = async (parents: any, args: any, c
     const xcmpFee = args?.xcmpFee;
     const status = args?.status;
     const eventType = args?.eventType;
+    const percentage = args?.percentage;
     console.log("args.lp", lp);
 
     try {
         let obj = {
             userAddress: userAddress,
             chain: chain,
+            taskId: taskId,
             lp: lp,
             duration: duration,
             frequency: frequency,
@@ -160,6 +162,7 @@ export const CreateAutocompoundEventResolver = async (parents: any, args: any, c
             xcmpFee: xcmpFee,
             status: status,
             eventType: eventType,
+            percentage: percentage,
         }
 
         let res = await collections.autocompoundEvents?.updateOne(
@@ -185,13 +188,13 @@ export const UpdateAutocompoundEventStatusResolver = async (parents: any, args: 
     const newStatus = args?.newStatus;
     try {
         let obj = {
-            taskId: taskId,
-            userAddress: userAddress,
-            lpName: lpName,
-            chain: chain,
+            // taskId: taskId,
+            // userAddress: userAddress,
+            // lpName: lpName,
+            // chain: chain,
             status: newStatus
         }
-        let res = await collections.autocompoundEvents?.updateOne(
+        let res = await collections.autocompoundEvents?.findOneAndUpdate(
             {
                 taskId: taskId,
                 userAddress: userAddress,

@@ -13,4 +13,5 @@ export default interface AutocompoundEvent {
     xcmpFee: number
     status: string
     eventType: string
+    percentage: number
 }
