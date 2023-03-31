@@ -2,6 +2,22 @@ import { collections } from "../services/database.service"
 import Farm from "../models/farm"
 import XCMPTask from "../models/xcmpTask"
 
+export const AutocompoundEventsResolver = async (parents: any, args: any, context: any) => {
+    const userAddress = args?.userAddress;
+    const chain = args?.chain;
+
+    try {
+        let cur = collections.autocompoundEvents?.find({ userAddress: userAddress, chain: chain, status: {$eq: "RUNNING" } })
+        const allValues = await cur?.toArray();
+        return allValues
+    } catch (error: any) {
+        console.log(error.message)
+        return JSON.stringify({
+            error: error.message
+        })
+    }
+}
+
 export const XCMPTasksResolver = async (parents: any, args: any, context: any) => {
     const userAddress = args?.userAddress;
     const chain = args?.chain;
