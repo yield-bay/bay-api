@@ -1,11 +1,12 @@
 import { FarmsResolver } from "./farms.resolver"
-import { AutocompoundEventsResolver, XCMPTasksResolver, AddTaskResolver, UpdateTaskStatusResolver, CreateLiquidityEventResolver, CreateAutocompoundEventResolver, UpdateAutocompoundEventStatusResolver } from "./xcmpTasks.resolver"
+import { CreateAutocompoundSetupEventResolver, AutocompoundSetupEventResolver, AutocompoundEventsResolver, XCMPTasksResolver, AddTaskResolver, UpdateTaskStatusResolver, CreateLiquidityEventResolver, CreateAutocompoundEventResolver, UpdateAutocompoundEventStatusResolver } from "./xcmpTasks.resolver"
 
 export const resolvers = {
   Query: {
     farms: FarmsResolver,
     xcmpTasks: XCMPTasksResolver,
     autocompoundEvents: AutocompoundEventsResolver,
+    autocompoundSetupEvent: AutocompoundSetupEventResolver,
   },
   Mutation: {
     addTask: AddTaskResolver,
@@ -13,5 +14,6 @@ export const resolvers = {
     createLiquidityEvent: CreateLiquidityEventResolver,
     createAutocompoundEvent: CreateAutocompoundEventResolver,
     updateAutocompoundEventStatus: UpdateAutocompoundEventStatusResolver,
+    createAutocompoundSetupEvent: CreateAutocompoundSetupEventResolver,
   }
 }

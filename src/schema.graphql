@@ -124,7 +124,20 @@ input TokenInput {
   amount: Float!
 }
 
+type AutocompoundSetupEvent {
+  userAddress: String!
+  chain: XCMPTaskChain!
+  lpName: String!
+  timestamp: String!
+}
+
 type Mutation {
+  createAutocompoundSetupEvent(
+    userAddress: String!
+    chain: XCMPTaskChain!
+    lpName: String!
+    timestamp: String!
+  ): AutocompoundSetupEvent
   createLiquidityEvent(
     userAddress: String!
     chain: XCMPTaskChain!
@@ -174,5 +187,14 @@ type Mutation {
 type Query {
   farms(chain: String, protocol: String, chef: String, id: Int): [Farm!]!
   xcmpTasks(userAddress: String!, chain: XCMPTaskChain!): [XCMPTask!]!
-  autocompoundEvents(userAddress: String!, chain: XCMPTaskChain!): [AutocompoundEvent!]!
+  autocompoundEvents(
+    userAddress: String!
+    chain: XCMPTaskChain!
+  ): [AutocompoundEvent!]!
+  autocompoundSetupEvent(
+    userAddress: String!
+    chain: XCMPTaskChain!
+    lpName: String!
+    timestamp: String!
+  ): AutocompoundSetupEvent
 }

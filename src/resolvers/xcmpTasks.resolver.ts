@@ -2,6 +2,44 @@ import { collections } from "../services/database.service"
 import Farm from "../models/farm"
 import XCMPTask from "../models/xcmpTask"
 
+export const AutocompoundSetupEventResolver = async (parents: any, args: any, context: any) => {
+    const userAddress = args?.userAddress;
+    const chain = args?.chain;
+    const lpName = args?.lpName;
+    const timestamp = args?.timestamp;
+
+    try {
+        let cur = collections.autocompoundSetupEvents?.find({ userAddress: userAddress, chain: chain, lpName: lpName, timestamp: timestamp })
+        const allValues = await cur?.toArray();
+        if (allValues !== undefined) {
+            return allValues[0];
+        }
+    } catch (error: any) {
+        console.log(error.message)
+        return JSON.stringify({
+            error: error.message
+        })
+    }
+}
+
+export const CreateAutocompoundSetupEventResolver = async (parents: any, args: any, context: any) => {
+    const userAddress = args?.userAddress;
+    const chain = args?.chain;
+    const lpName = args?.lpName;
+    const timestamp = args?.timestamp;
+
+    let obj = { userAddress: userAddress, chain: chain, lpName: lpName, timestamp: timestamp };
+    try {
+        let res = collections.autocompoundSetupEvents?.insertOne(obj)
+        return obj;
+    } catch (error: any) {
+        console.log(error.message)
+        return JSON.stringify({
+            error: error.message
+        })
+    }
+}
+
 export const AutocompoundEventsResolver = async (parents: any, args: any, context: any) => {
     const userAddress = args?.userAddress;
     const chain = args?.chain;
