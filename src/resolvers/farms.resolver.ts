@@ -6,7 +6,8 @@ export const FarmsResolver = async (parents: any, args: any, context: any) => {
         const dbFarms: Farm[] = (await collections.farms
             ?.find({
                 allocPoint: { $exists: true, $gt: 0 },
-                "asset.symbol": { $nin: ["xStella", "veSOLAR", "veFLARE", "veFLARE-veSOLAR LP"] }
+                "asset.symbol": { $nin: ["xStella", "veSOLAR", "veFLARE", "veFLARE-veSOLAR LP"] },
+                $or: [{ id: { $nin: [31, 34, 10, 29, 30, 28] } }, { chef: { $nin: ["0xF3a5454496E26ac57da879bf3285Fa85DEBF0388"] } }],
             })
             .sort({ tvl: -1 })
             .toArray()) as unknown as Farm[]
