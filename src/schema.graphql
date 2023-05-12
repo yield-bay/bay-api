@@ -200,6 +200,7 @@ input Protocol {
 type Query {
   farms(chain: String, protocol: String, chef: String, id: Int): [Farm!]!
   lpTokenPrices(protocols: [Protocol!]!): [AssetPrice!]!
+  tokenPrices(protocols: [Protocol!]!): [AssetPrice!]!
   xcmpTasks(userAddress: String!, chain: XCMPTaskChain!): [XCMPTask!]!
   autocompoundEvents(
     userAddress: String!
