@@ -190,6 +190,7 @@ type AssetPrice {
   symbol: String!
   address: String!
   price: Float!
+  underlyingAssets: [String!]
 }
 
 input Protocol {
