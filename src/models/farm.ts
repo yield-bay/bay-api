@@ -5,11 +5,18 @@ interface Reward {
     freq: string
 }
 
+interface UnderlyingAsset {
+    symbol: string
+    address: string
+    decimals: number
+}
+
 export default interface Farm {
     id: number
     chef: string
     chain: string
     protocol: string
+    router: string
     farmType: string
     farmImpl: string
     asset: {
@@ -17,6 +24,7 @@ export default interface Farm {
         address: string
         price: number
         logos: Array<string>
+        underlyingAssets: Array<UnderlyingAsset>
     }
     tvl: number
     apr: {
