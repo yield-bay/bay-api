@@ -30,11 +30,18 @@ type Reward {
   freq: String!
 }
 
+type UnderlyingAsset {
+  symbol: String!
+  address: String!
+  decimals: Int!
+}
+
 type Asset {
   symbol: String!
   address: String!
   price: Float!
   logos: [String!]!
+  underlyingAssets: [UnderlyingAsset!]!
 }
 
 type APR {
@@ -47,6 +54,7 @@ type Farm {
   chef: String
   chain: String!
   protocol: String!
+  router: String!
   farmType: String!
   farmImpl: String!
   asset: Asset!
@@ -190,7 +198,7 @@ type AssetPrice {
   symbol: String!
   address: String!
   price: Float!
-  underlyingAssets: [String!]
+  underlyingAssets: [UnderlyingAsset!]
 }
 
 input Protocol {

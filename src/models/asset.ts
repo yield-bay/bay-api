@@ -1,3 +1,8 @@
+interface UnderlyingAsset {
+    symbol: string
+    address: string
+    decimals: number
+}
 export default interface Asset {
     address: string
     chain: string
@@ -11,7 +16,7 @@ export default interface Asset {
     totalSupply: number
     isLP: boolean
     feesAPR: number
-    underlyingAssets: Array<string>
+    underlyingAssets: Array<UnderlyingAsset>
     underlyingAssetsAlloc: Array<number>
     lastUpdatedAtUTC: string
 }
