@@ -19,6 +19,7 @@ export const LpTokenPricesResolver = async (parents: any, args: any, context: an
                 symbol: asset.symbol,
                 address: asset.address,
                 price: asset.price,
+                decimals: asset.decimals,
                 underlyingAssets: asset.underlyingAssets,
             }
         })
@@ -49,6 +50,7 @@ export const TokenPricesResolver = async (parents: any, args: any, context: any)
                 symbol: asset.symbol,
                 address: asset.address,
                 price: asset.price,
+                decimals: asset.decimals,
             }
         })
         return lpTokenPrices
