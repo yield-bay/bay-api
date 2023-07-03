@@ -1,6 +1,7 @@
 import { LpTokenPricesResolver, TokenPricesResolver } from "./assets.resolver"
 import { FarmsResolver } from "./farms.resolver"
 import { CreateAutocompoundSetupEventResolver, AutocompoundSetupEventResolver, AutocompoundEventsResolver, XCMPTasksResolver, AddTaskResolver, UpdateTaskStatusResolver, CreateLiquidityEventResolver, CreateAutocompoundEventResolver, UpdateAutocompoundEventStatusResolver } from "./xcmpTasks.resolver"
+import { CreateWalletConnectEventResolver } from "./tracking.resolver"
 
 export const resolvers = {
   Query: {
@@ -18,5 +19,6 @@ export const resolvers = {
     createAutocompoundEvent: CreateAutocompoundEventResolver,
     updateAutocompoundEventStatus: UpdateAutocompoundEventStatusResolver,
     createAutocompoundSetupEvent: CreateAutocompoundSetupEventResolver,
+    createWalletConnectEvent: CreateWalletConnectEventResolver,
   }
 }
