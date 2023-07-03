@@ -142,6 +142,7 @@ type AutocompoundSetupEvent {
 type WalletConnectEvent {
   userAddress: String!
   walletType: String! # EVM or DOT
+  walletProvider: String!
   timestamp: String!
 }
 
@@ -149,6 +150,7 @@ type Mutation {
   createWalletConnectEvent(
     userAddress: String!
     walletType: String!
+    walletProvider: String!
     timestamp: String!
   ): WalletConnectEvent
   createAutocompoundSetupEvent(
