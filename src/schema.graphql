@@ -146,7 +146,110 @@ type WalletConnectEvent {
   timestamp: String!
 }
 
+type FarmPruned {
+  id: Int
+  chef: String
+  chain: String!
+  protocol: String!
+  assetSymbol: String!
+}
+
+type Amount {
+  amount: Float!
+  asset: String!
+  valueUSD: Float!
+}
+
+type AddLiquidityEvent {
+  userAddress: String!
+  walletType: String! # EVM or DOT
+  walletProvider: String!
+  timestamp: String!
+  farm: FarmPruned!
+  underlyingAmounts: [Amount!]!
+  lpAmount: Amount!
+}
+
+type RemoveLiquidityEvent {
+  userAddress: String!
+  walletType: String! # EVM or DOT
+  walletProvider: String!
+  timestamp: String!
+  farm: FarmPruned!
+  underlyingAmounts: [Amount!]!
+  lpAmount: Amount!
+}
+
+type StakeEvent {
+  userAddress: String!
+  walletType: String! # EVM or DOT
+  walletProvider: String!
+  timestamp: String!
+  farm: FarmPruned!
+  lpAmount: Amount!
+}
+
+type UnstakeEvent {
+  userAddress: String!
+  walletType: String! # EVM or DOT
+  walletProvider: String!
+  timestamp: String!
+  farm: FarmPruned!
+  lpAmount: Amount!
+}
+
+type ClaimRewardsEvent {
+  userAddress: String!
+  walletType: String! # EVM or DOT
+  walletProvider: String!
+  timestamp: String!
+  farm: FarmPruned!
+  rewards: [Amount!]!
+}
+
 type Mutation {
+  createAddLiquidityEvent(
+    userAddress: String!
+    walletType: String! # EVM or DOT
+    walletProvider: String!
+    timestamp: String!
+    farm: FarmPruned!
+    underlyingAmounts: [Amount!]!
+    lpAmount: Amount!
+  ): AddLiquidityEvent
+  createRemoveLiquidityEvent(
+    userAddress: String!
+    walletType: String! # EVM or DOT
+    walletProvider: String!
+    timestamp: String!
+    farm: FarmPruned!
+    underlyingAmounts: [Amount!]!
+    lpAmount: Amount!
+  ): RemoveLiquidityEvent
+  createStakeEvent(
+    userAddress: String!
+    walletType: String! # EVM or DOT
+    walletProvider: String!
+    timestamp: String!
+    farm: FarmPruned!
+    lpAmount: Amount!
+  ): StakeEvent
+  createUnstakeEvent(
+    userAddress: String!
+    walletType: String! # EVM or DOT
+    walletProvider: String!
+    timestamp: String!
+    farm: FarmPruned!
+    lpAmount: Amount!
+  ): UnstakeEvent
+  createClaimRewardsEvent(
+    userAddress: String!
+    walletType: String! # EVM or DOT
+    walletProvider: String!
+    timestamp: String!
+    farm: FarmPruned!
+    rewards: [Amount!]!
+  ): ClaimRewardsEvent
   createWalletConnectEvent(
     userAddress: String!
     walletType: String!

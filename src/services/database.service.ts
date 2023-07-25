@@ -11,6 +11,11 @@ export const collections: {
   autocompoundEvents?: mongoDB.Collection
   autocompoundSetupEvents?: mongoDB.Collection
   walletConnectEvents?: mongoDB.Collection
+  addLiquidityEvents?: mongoDB.Collection
+  removeLiquidityEvents?: mongoDB.Collection
+  stakeEvents?: mongoDB.Collection
+  unstakeEvents?: mongoDB.Collection
+  claimRewardsEvents?: mongoDB.Collection
 } = {}
 
 // Initialize Connection
@@ -32,6 +37,11 @@ export async function connectToDatabase() {
   const autocompoundEventsCollection: mongoDB.Collection = db.collection("autocompoundEvents")
   const autocompoundSetupEventsCollection: mongoDB.Collection = db.collection("autocompoundSetupEvents")
   const walletConnectEventsCollection: mongoDB.Collection = db.collection("walletConnectEvents")
+  const addLiquidityEventsCollection: mongoDB.Collection = db.collection("addLiquidityEvents")
+  const removeLiquidityEventsCollection: mongoDB.Collection = db.collection("removeLiquidityEvents")
+  const stakeEventsCollection: mongoDB.Collection = db.collection("stakeEvents")
+  const unstakeEventsCollection: mongoDB.Collection = db.collection("unstakeEvents")
+  const claimRewardsEventsCollection: mongoDB.Collection = db.collection("claimRewardsEvents")
 
   collections.assets = assetsCollection
   collections.farms = farmsCollection
@@ -40,6 +50,11 @@ export async function connectToDatabase() {
   collections.autocompoundEvents = autocompoundEventsCollection
   collections.autocompoundSetupEvents = autocompoundSetupEventsCollection
   collections.walletConnectEvents = walletConnectEventsCollection
+  collections.addLiquidityEvents = addLiquidityEventsCollection
+  collections.removeLiquidityEvents = removeLiquidityEventsCollection
+  collections.stakeEvents = stakeEventsCollection
+  collections.unstakeEvents = unstakeEventsCollection
+  collections.claimRewardsEvents = claimRewardsEventsCollection
 
   console.log(`Successfully connected to database: ${db.databaseName}`)
 }
