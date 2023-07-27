@@ -146,7 +146,7 @@ type WalletConnectEvent {
   timestamp: String!
 }
 
-type FarmPruned {
+input FarmPruned {
   id: Int
   chef: String
   chain: String!
@@ -154,7 +154,21 @@ type FarmPruned {
   assetSymbol: String!
 }
 
-type Amount {
+input Amount {
+  amount: Float!
+  asset: String!
+  valueUSD: Float!
+}
+
+type FarmPrunedT {
+  id: Int
+  chef: String
+  chain: String!
+  protocol: String!
+  assetSymbol: String!
+}
+
+type AmountT {
   amount: Float!
   asset: String!
   valueUSD: Float!
@@ -165,9 +179,9 @@ type AddLiquidityEvent {
   walletType: String! # EVM or DOT
   walletProvider: String!
   timestamp: String!
-  farm: FarmPruned!
-  underlyingAmounts: [Amount!]!
-  lpAmount: Amount!
+  farm: FarmPrunedT!
+  underlyingAmounts: [AmountT!]!
+  lpAmount: AmountT!
 }
 
 type RemoveLiquidityEvent {
@@ -175,9 +189,9 @@ type RemoveLiquidityEvent {
   walletType: String! # EVM or DOT
   walletProvider: String!
   timestamp: String!
-  farm: FarmPruned!
-  underlyingAmounts: [Amount!]!
-  lpAmount: Amount!
+  farm: FarmPrunedT!
+  underlyingAmounts: [AmountT!]!
+  lpAmount: AmountT!
 }
 
 type StakeEvent {
@@ -185,8 +199,8 @@ type StakeEvent {
   walletType: String! # EVM or DOT
   walletProvider: String!
   timestamp: String!
-  farm: FarmPruned!
-  lpAmount: Amount!
+  farm: FarmPrunedT!
+  lpAmount: AmountT!
 }
 
 type UnstakeEvent {
@@ -194,8 +208,8 @@ type UnstakeEvent {
   walletType: String! # EVM or DOT
   walletProvider: String!
   timestamp: String!
-  farm: FarmPruned!
-  lpAmount: Amount!
+  farm: FarmPrunedT!
+  lpAmount: AmountT!
 }
 
 type ClaimRewardsEvent {
@@ -203,8 +217,8 @@ type ClaimRewardsEvent {
   walletType: String! # EVM or DOT
   walletProvider: String!
   timestamp: String!
-  farm: FarmPruned!
-  rewards: [Amount!]!
+  farm: FarmPrunedT!
+  rewards: [AmountT!]!
 }
 
 type Mutation {
